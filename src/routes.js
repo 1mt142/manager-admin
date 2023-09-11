@@ -5,7 +5,9 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
-import Blogs from "views/pages/Blogs";
+import Blogs from "views/pages/Blog/Blogs";
+import BlogDetails from "views/pages/Blog/BlogDetails";
+import BlogCreateEdit from "views/pages/Blog/BlogCreateEdit";
 
 var routes = [
   {
@@ -62,6 +64,18 @@ var routes = [
     name: "Blogs",
     icon: "ni ni-circle-08 text-pink",
     component: <Blogs />,
+    layout: "/admin",
+  },
+  {
+    path: "/blogs/:id/details",
+    component: <BlogDetails />,
+    layout: "/admin",
+  },
+
+  {
+    path: "/blogs/:id/edit",
+    icon: "ni ni-circle-08 text-pink",
+    component: <BlogCreateEdit />,
     layout: "/admin",
   },
 ];
