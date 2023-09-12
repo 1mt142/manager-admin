@@ -78,5 +78,12 @@ var routes = [
     component: <BlogCreateEdit />,
     layout: "/admin",
   },
+  {
+    path: "/blogs/create",
+    name: "Blog Create",
+    icon: "ni ni-circle-08 text-pink",
+    component: <BlogCreateEdit />,
+    layout: "/admin",
+  },
 ];
 export default routes;

@@ -36,14 +36,14 @@ const BlogCreateEdit = () => {
   console.log(data);
 
   const initialValues = {
-    title: "",
+    title: data.title || "",
     tags: [],
     category: "",
-    content: "",
+    content: data.content || "",
   };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
-    // tags: Yup.string().required("Tags is required"),
+    tags: Yup.array().of(Yup.string()).required("Tags is required"),
     category: Yup.string().required("Category is required"),
     content: Yup.string().required("Content is required"),
   });
@@ -76,6 +76,7 @@ const BlogCreateEdit = () => {
                   <Card className="bg-secondary shadow">
                     <CardBody>
                       <Formik
+                        enableReinitialize
                         initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmitMethod}
@@ -123,18 +124,16 @@ const BlogCreateEdit = () => {
                                       className="form-control-alternative"
                                       type="text"
                                       name="tags"
-                                      onChange={(option) => {
-                                        option
-                                          ? formikProps.setFieldValue(
-                                              "tags",
-                                              option
-                                            )
-                                          : formikProps.setFieldValue(
-                                              "tags",
-                                              ""
-                                            );
-                                      }}
                                       options={options}
+                                      onChange={(selectedOptions) => {
+                                        const selectedValues = selectedOptions.map(
+                                          (option) => option?.value
+                                        );
+                                        formikProps.setFieldValue(
+                                          "tags",
+                                          selectedValues
+                                        );
+                                      }}
                                       onBlur={formikProps.handleBlur}
                                       menuPortalTarget={document.body}
                                       isSearchable
@@ -161,16 +160,11 @@ const BlogCreateEdit = () => {
                                       type="text"
                                       className="form-control-alternative"
                                       name="category"
-                                      onChange={(option) => {
-                                        option
-                                          ? formikProps.setFieldValue(
-                                              "category",
-                                              option
-                                            )
-                                          : formikProps.setFieldValue(
-                                              "category",
-                                              ""
-                                            );
+                                      onChange={(selectedOption) => {
+                                        formikProps.setFieldValue(
+                                          "category",
+                                          selectedOption?.value
+                                        );
                                       }}
                                       options={options}
                                       onBlur={formikProps.handleBlur}
@@ -219,84 +213,6 @@ const BlogCreateEdit = () => {
                     </CardBody>
                   </Card>
                 </Col>
-                {/* <div className="container mt-5">
-                  <div className="row">
-                    <div className="col-md-6 offset-md-3">
-                      <h2>Registration Form</h2>
-                      <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                      >
-                        <Form>
-                          <div className="form-group">
-                            <label htmlFor="title">Username</label>
-                            <Field
-                              type="text"
-                              id="title"
-                              name="title"
-                              className="form-control"
-                            />
-                            <ErrorMessage
-                              name="title"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label htmlFor="email">Email Address</label>
-                            <Field
-                              type="text"
-                              id="email"
-                              name="email"
-                              className="form-control"
-                            />
-                            <ErrorMessage
-                              name="email"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label htmlFor="aboutMe">About Me</label>
-                            <Field
-                              as="textarea"
-                              id="aboutMe"
-                              name="aboutMe"
-                              className="form-control"
-                            />
-                            <ErrorMessage
-                              name="aboutMe"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label htmlFor="postalCode">Postal Code</label>
-                            <Field
-                              type="text"
-                              id="postalCode"
-                              name="postalCode"
-                              className="form-control"
-                            />
-                            <ErrorMessage
-                              name="postalCode"
-                              component="div"
-                              className="text-danger"
-                            />
-                          </div>
-
-                          <button type="submit" className="btn btn-primary">
-                            Submit
-                          </button>
-                        </Form>
-                      </Formik>
-                    </div>
-                  </div>
-                </div> */}
               </CardBody>
             </Card>
           </div>
