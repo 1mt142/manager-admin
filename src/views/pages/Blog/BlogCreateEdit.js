@@ -31,7 +31,7 @@ const BlogCreateEdit = () => {
 
   useEffect(() => {
     getPost(id);
-  }, []);
+  }, [id]);
 
   console.log(data);
 
@@ -126,9 +126,10 @@ const BlogCreateEdit = () => {
                                       name="tags"
                                       options={options}
                                       onChange={(selectedOptions) => {
-                                        const selectedValues = selectedOptions.map(
-                                          (option) => option?.value
-                                        );
+                                        const selectedValues =
+                                          selectedOptions.map(
+                                            (option) => option?.value
+                                          );
                                         formikProps.setFieldValue(
                                           "tags",
                                           selectedValues

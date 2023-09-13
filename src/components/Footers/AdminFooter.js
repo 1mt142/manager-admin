@@ -1,5 +1,5 @@
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <a
               className="font-weight-bold ml-1"
-              href=""
+              href="https://1mt142.github.io/know-me"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -22,7 +22,11 @@ const Footer = () => {
         <Col xl="6">
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
-              <NavLink href="" rel="noopener noreferrer" target="_blank">
+              <NavLink
+                href="https://1mt142.github.io/know-me"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 1mt142
               </NavLink>
             </NavItem>
@@ -34,13 +38,21 @@ const Footer = () => {
             </NavItem>
 
             <NavItem>
-              <NavLink href="" rel="noopener noreferrer" target="_blank">
+              <NavLink
+                href="https://1mt142.github.io/know-me"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 Blog
               </NavLink>
             </NavItem>
 
             <NavItem>
-              <NavLink href="" rel="noopener noreferrer" target="_blank">
+              <NavLink
+                href="https://1mt142.github.io/know-me"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 License
               </NavLink>
             </NavItem>

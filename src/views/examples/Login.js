@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { loginRequest } from "core/apiClient";
 import { GET_LOGIN_API } from "core/apiEndpoints";

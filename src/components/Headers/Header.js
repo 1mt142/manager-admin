@@ -1,4 +1,4 @@
-import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { Container, Row } from "reactstrap";
 
 const Header = () => {
   return (

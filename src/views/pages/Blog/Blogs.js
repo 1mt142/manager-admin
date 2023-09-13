@@ -1,6 +1,5 @@
 // reactstrap components
 import {
-  Badge,
   Card,
   CardHeader,
   CardFooter,

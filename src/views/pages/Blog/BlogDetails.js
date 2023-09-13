@@ -18,7 +18,7 @@ const BlogDetails = () => {
 
   useEffect(() => {
     getPost(id);
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -33,7 +33,7 @@ const BlogDetails = () => {
               <CardBody>
                 <h1>{data.title}</h1>
                 <p>{data.content}</p>
-                <img src={`${BASE_API}/${data.imagePath}`} />
+                <img src={`${BASE_API}/${data.imagePath}`} alt="Blog" />
               </CardBody>
             </Card>
           </div>
