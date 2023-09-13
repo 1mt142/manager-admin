@@ -5,16 +5,47 @@ import {
   CardHeader,
   CardBody,
   FormGroup,
-  Form,
-  Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
   Row,
   Col,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { loginRequest } from "core/apiClient";
+import { GET_LOGIN_API } from "core/apiEndpoints";
 
 const Login = () => {
+  const navigate = useNavigate();
+  async function postLogin(email, password) {
+    await loginRequest(GET_LOGIN_API, { email, password })
+      .then((response) => {
+        if (response === true) {
+          return navigate("/admin/index");
+        } else {
+          return navigate("/auth/login");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email should be valid email.")
+      .required("Email is required."),
+    password: Yup.string().required("Password is required."),
+  });
+
+  const handleSubmitMethod = ({ email, password }) => {
+    postLogin(email, password);
+  };
   return (
     <>
       <Col lg="5" md="7">
@@ -64,54 +95,67 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <Form role="form">
-              <FormGroup className="mb-3">
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-email-83" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="new-email"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="new-password"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <div className="custom-control custom-control-alternative custom-checkbox">
-                <input
-                  className="custom-control-input"
-                  id=" customCheckLogin"
-                  type="checkbox"
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
-                  <span className="text-muted">Remember me</span>
-                </label>
-              </div>
-              <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
-                  Sign in
-                </Button>
-              </div>
-            </Form>
+            <Formik
+              enableReinitialize
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmitMethod}
+            >
+              {(formikProps) => (
+                <Form role="form" onSubmit={formikProps.handleSubmit}>
+                  <FormGroup className="mb-3">
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-email-83" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Field
+                        className="form-control form-control-alternative"
+                        placeholder="Email"
+                        type="email"
+                        autoComplete="new-email"
+                        name="email"
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <FormGroup>
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-lock-circle-open" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Field
+                        className="form-control form-control-alternative"
+                        placeholder="Password"
+                        type="password"
+                        autoComplete="new-password"
+                        name="password"
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <div className="custom-control custom-control-alternative custom-checkbox">
+                    <input
+                      className="custom-control-input"
+                      id=" customCheckLogin"
+                      type="checkbox"
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor=" customCheckLogin"
+                    >
+                      <span className="text-muted">Remember me</span>
+                    </label>
+                  </div>
+                  <div className="text-center">
+                    <Button className="my-4" color="primary" type="submit">
+                      Sign in
+                    </Button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </CardBody>
         </Card>
         <Row className="mt-3">

@@ -102,11 +102,12 @@ const Sidebar = (props) => {
         {/* Brand */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            <img
+            {/* <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
-            />
+            /> */}
+            <h1>1MT142</h1>
           </NavbarBrand>
         ) : null}
         {/* User */}
