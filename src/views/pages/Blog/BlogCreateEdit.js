@@ -16,13 +16,15 @@ import Select from "react-select";
 
 import Header from "components/Headers/Header.js";
 import { useEffect, useState, useRef } from "react";
-import { GET_BLOG_API } from "core/apiEndpoints";
-import { getPublicData } from "core/apiClient";
+import {
+  GET_BLOG_API,
+  GET_TAG_API,
+  POST_BLOG_API,
+  PUT_BLOG_API,
+  GET_CATEGORY_API,
+} from "core/apiEndpoints";
+import { getPublicData, postPrivateData, putPrivateData } from "core/apiClient";
 import { useParams } from "react-router-dom";
-import { GET_CATEGORY_API } from "core/apiEndpoints";
-import { GET_TAG_API } from "core/apiEndpoints";
-import { postPrivateData } from "core/apiClient";
-import { POST_BLOG_API } from "core/apiEndpoints";
 
 const BlogCreateEdit = () => {
   const [data, setData] = useState({});
@@ -34,11 +36,19 @@ const BlogCreateEdit = () => {
   const formRef = useRef(null);
 
   async function postBlog(body) {
-    await postPrivateData(POST_BLOG_API, body)
-      .then((response) => {
-        toast.success(response.data.message);
-      })
-      .catch((err) => console.log(err));
+    if (id) {
+      await putPrivateData(`${PUT_BLOG_API + id}`, body)
+        .then((response) => {
+          toast.success(response.data.message);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      await postPrivateData(POST_BLOG_API, body)
+        .then((response) => {
+          toast.success(response.data.message);
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   async function getPost(ID) {
@@ -177,9 +187,10 @@ const BlogCreateEdit = () => {
                                       name="tags"
                                       options={tagOption}
                                       onChange={(selectedOptions) => {
-                                        const selectedValues = selectedOptions.map(
-                                          (option) => option?.value
-                                        );
+                                        const selectedValues =
+                                          selectedOptions.map(
+                                            (option) => option?.value
+                                          );
                                         formikProps.setFieldValue(
                                           "tags",
                                           selectedValues

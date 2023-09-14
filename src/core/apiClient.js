@@ -30,7 +30,7 @@ export const postPrivateData = (endpoint, formData) => {
 };
 
 export const putPrivateData = (endpoint, data) => {
-  return privateAPI.put(endpoint, data);
+  return privateAPI.patch(endpoint, data);
 };
 
 export const deletePrivateData = (endpoint) => {

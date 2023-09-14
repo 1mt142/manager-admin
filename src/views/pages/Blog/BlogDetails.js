@@ -28,7 +28,7 @@ const BlogDetails = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Card tables</h3>
+                <h3 className="mb-0">Blog Details</h3>
               </CardHeader>
               <CardBody>
                 <h1>{data.title}</h1>

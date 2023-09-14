@@ -15,23 +15,18 @@ import Header from "components/Headers/Header.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
-import { GET_BLOGS_API } from "core/apiEndpoints";
+import { GET_CATEGORY_API } from "core/apiEndpoints";
 
-const Blogs = () => {
-  const [data, setData] = useState({});
-  async function getPosts(params = {}) {
-    await getPublicData(GET_BLOGS_API, params)
-      .then((response) => {
-        setData(response.data);
-      })
+const Categories = () => {
+  const [data, setData] = useState([]);
+  async function getCategory() {
+    await getPublicData(GET_CATEGORY_API)
+      .then((response) => setData(response?.data))
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    getPosts({
-      page: 1,
-      limit: 10,
-    });
+    getCategory();
   }, []);
 
   console.log(data);
@@ -51,18 +46,16 @@ const Blogs = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Created by</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Actions </th>
                   </tr>
                 </thead>
                 <tbody>
                   {data &&
-                    data?.data?.map((item, idx) => (
+                    data.map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item.title}</td>
-                        <td>{item?.user?.username}</td>
+                        <td>{item.name}</td>
                         <td>{item.created_at}</td>
                         <th>
                           {" "}
@@ -137,4 +130,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default Categories;
