@@ -1,13 +1,31 @@
+import { getPrivateData } from "core/apiClient";
+import { POST_BLOG_STATS_API } from "core/apiEndpoints";
+import { useEffect, useState } from "react";
 import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 
-const Header = () => {
+const Stats = () => {
+  const [data, setData] = useState({});
+  async function getBlogStats() {
+    await getPrivateData(POST_BLOG_STATS_API)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    getBlogStats();
+  }, []);
+
+  console.log(data);
+
   return (
     <>
-      <div className="header bg-gradient-info pb-5 pt-5 pt-md-8">
+      <div className="stats-header">
         <Container fluid>
           <div className="header-body">
-            {/* Card stats */}
-            {/* <Row>
+            {/* Blogs stats */}
+            <Row>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
@@ -17,10 +35,10 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Traffic
+                          Blogs
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          350,897
+                          {data ? data.posts : "Not Found"}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -47,13 +65,15 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          Total Users
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {data ? data.users : "Not Found"}
+                        </span>
                       </div>
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                          <i className="fas fa-chart-pie" />
+                        <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                          <i className="fas fa-users" />
                         </div>
                       </Col>
                     </Row>
@@ -75,13 +95,15 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Sales
+                          Categories
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {data ? data.categories : "Not Found"}
+                        </span>
                       </div>
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                          <i className="fas fa-users" />
+                        <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                          <i className="fas fa-chart-pie" />
                         </div>
                       </Col>
                     </Row>
@@ -103,9 +125,11 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Performance
+                          Tags
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">49,65%</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {data ? data.tags : "Not Found"}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -122,7 +146,7 @@ const Header = () => {
                   </CardBody>
                 </Card>
               </Col>
-            </Row> */}
+            </Row>
           </div>
         </Container>
       </div>
@@ -130,4 +154,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Stats;

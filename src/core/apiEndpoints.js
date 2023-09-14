@@ -6,3 +6,4 @@ export const GET_BLOG_API = `/post/`;
 export const GET_CATEGORY_API = `/category`;
 export const GET_TAG_API = `/tag`;
 export const POST_BLOG_API = `/post`;
+export const POST_BLOG_STATS_API = `/stats/blogs/`;
