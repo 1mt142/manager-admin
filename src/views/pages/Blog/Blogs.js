@@ -62,7 +62,7 @@ const Blogs = () => {
                     data?.data?.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.title}</td>
-                        <td>{item.user.username}</td>
+                        <td>{item?.user?.username}</td>
                         <td>{item.created_at}</td>
                         <th>
                           {" "}
