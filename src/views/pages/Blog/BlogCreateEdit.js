@@ -18,10 +18,22 @@ import { useEffect, useState } from "react";
 import { GET_BLOG_API } from "core/apiEndpoints";
 import { getPublicData } from "core/apiClient";
 import { useParams } from "react-router-dom";
+import { GET_CATEGORY_API } from "core/apiEndpoints";
+import { GET_TAG_API } from "core/apiEndpoints";
+import { postPrivateData } from "core/apiClient";
+import { POST_BLOG_API } from "core/apiEndpoints";
 
 const BlogCreateEdit = () => {
   const [data, setData] = useState({});
+  const [categoryData, setCategoryData] = useState([]);
+  const [tagData, setTagData] = useState([]);
   const { id } = useParams();
+
+  async function postBlog(body) {
+    await postPrivateData(POST_BLOG_API, body)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  }
 
   async function getPost(ID) {
     await getPublicData(GET_BLOG_API + ID)
@@ -29,35 +41,62 @@ const BlogCreateEdit = () => {
       .catch((err) => console.log(err));
   }
 
+  async function getCategory() {
+    await getPublicData(GET_CATEGORY_API)
+      .then((response) => setCategoryData(response?.data))
+      .catch((err) => console.log(err));
+  }
+
+  async function getTag() {
+    await getPublicData(GET_TAG_API)
+      .then((response) => setTagData(response?.data))
+      .catch((err) => console.log(err));
+  }
+
   useEffect(() => {
     getPost(id);
+    getCategory();
+    getTag();
   }, [id]);
-
-  console.log(data);
 
   const initialValues = {
     title: data.title || "",
     tags: [],
-    category: "",
+    categoryId: "",
     content: data.content || "",
   };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     tags: Yup.array().of(Yup.string()).required("Tags is required"),
-    category: Yup.string().required("Category is required"),
+    categoryId: Yup.string().required("Category is required"),
     content: Yup.string().required("Content is required"),
+    file: Yup.mixed().required("Image is required"),
   });
 
   const handleSubmitMethod = (values) => {
-    // Handle form submission here
-    console.log(values);
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("content", values.content);
+    formData.append("tags", values.tags);
+    formData.append("categoryId", values.categoryId);
+    formData.append("image", values.file);
+    console.log("FromData", formData);
+    postBlog(formData);
   };
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  const categoryOption = categoryData.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
+
+  const tagOption = tagData.map((item) => {
+    return {
+      label: item.title,
+      value: item.id,
+    };
+  });
 
   return (
     <>
@@ -71,7 +110,7 @@ const BlogCreateEdit = () => {
               <CardHeader className="border-0">
                 <h3 className="mb-0">BLOG {id ? "EDIT" : "CREATE"}</h3>
               </CardHeader>
-              <CardBody>
+              <CardBody className="child_div_center">
                 <Col className="order-xl-1" xl="8">
                   <Card className="bg-secondary shadow">
                     <CardBody>
@@ -124,7 +163,7 @@ const BlogCreateEdit = () => {
                                       className="form-control-alternative"
                                       type="text"
                                       name="tags"
-                                      options={options}
+                                      options={tagOption}
                                       onChange={(selectedOptions) => {
                                         const selectedValues =
                                           selectedOptions.map(
@@ -160,14 +199,14 @@ const BlogCreateEdit = () => {
                                     <Select
                                       type="text"
                                       className="form-control-alternative"
-                                      name="category"
+                                      name="categoryId"
                                       onChange={(selectedOption) => {
                                         formikProps.setFieldValue(
-                                          "category",
+                                          "categoryId",
                                           selectedOption?.value
                                         );
                                       }}
-                                      options={options}
+                                      options={categoryOption}
                                       onBlur={formikProps.handleBlur}
                                       menuPortalTarget={document.body}
                                       isSearchable
@@ -175,7 +214,7 @@ const BlogCreateEdit = () => {
                                       placeholder={"Select Category"}
                                     />
                                     <ErrorMessage
-                                      name="category"
+                                      name="categoryId"
                                       component="div"
                                       className="text-danger"
                                     />
@@ -183,6 +222,39 @@ const BlogCreateEdit = () => {
                                 </Col>
                               </Row>
                             </div>
+                            <hr className="my-4" />
+                            <h6 className="heading-small text-muted mb-4">
+                              Blog Image
+                            </h6>
+
+                            <Col md="12">
+                              <FormGroup>
+                                <label
+                                  className="form-control-label"
+                                  htmlFor="input-address"
+                                >
+                                  Image
+                                </label>
+                                <input
+                                  className="form-control form-control-alternative"
+                                  id="input-image"
+                                  name="file"
+                                  type="file"
+                                  onChange={(event) => {
+                                    formikProps.setFieldValue(
+                                      "file",
+                                      event.currentTarget.files[0]
+                                    );
+                                  }}
+                                  accept="image/*"
+                                />
+                                <ErrorMessage
+                                  name="image"
+                                  component="div"
+                                  className="text-danger"
+                                />
+                              </FormGroup>
+                            </Col>
 
                             <hr className="my-4" />
                             <h6 className="heading-small text-muted mb-4">
