@@ -9,12 +9,13 @@ import {
   FormGroup,
   Col,
 } from "reactstrap";
+import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 
 import Header from "components/Headers/Header.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { GET_BLOG_API } from "core/apiEndpoints";
 import { getPublicData } from "core/apiClient";
 import { useParams } from "react-router-dom";
@@ -27,11 +28,16 @@ const BlogCreateEdit = () => {
   const [data, setData] = useState({});
   const [categoryData, setCategoryData] = useState([]);
   const [tagData, setTagData] = useState([]);
+  const [dropdownKey, setDropdownKey] = useState(0);
   const { id } = useParams();
+
+  const formRef = useRef(null);
 
   async function postBlog(body) {
     await postPrivateData(POST_BLOG_API, body)
-      .then((response) => console.log(response))
+      .then((response) => {
+        toast.success(response.data.message);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -73,7 +79,7 @@ const BlogCreateEdit = () => {
     file: Yup.mixed().required("Image is required"),
   });
 
-  const handleSubmitMethod = (values) => {
+  const handleSubmitMethod = (values, { resetForm }) => {
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("content", values.content);
@@ -82,6 +88,9 @@ const BlogCreateEdit = () => {
     formData.append("image", values.file);
     console.log("FromData", formData);
     postBlog(formData);
+    resetForm(); // this method is for without formik field
+    setDropdownKey(dropdownKey + 1);
+    formRef.current.reset();
   };
 
   const categoryOption = categoryData.map((item) => {
@@ -121,7 +130,10 @@ const BlogCreateEdit = () => {
                         onSubmit={handleSubmitMethod}
                       >
                         {(formikProps) => (
-                          <Form onSubmit={formikProps.handleSubmit}>
+                          <Form
+                            onSubmit={formikProps.handleSubmit}
+                            ref={formRef}
+                          >
                             <h6 className="heading-small text-muted mb-4">
                               Insert You Blog
                             </h6>
@@ -137,7 +149,6 @@ const BlogCreateEdit = () => {
                                     </label>
                                     <Field
                                       className="form-control form-control-alternative"
-                                      // defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                                       id="input-address"
                                       name="title"
                                       placeholder="Blog Title"
@@ -160,6 +171,7 @@ const BlogCreateEdit = () => {
                                       Tags
                                     </label>
                                     <Select
+                                      key={dropdownKey}
                                       className="form-control-alternative"
                                       type="text"
                                       name="tags"
@@ -196,6 +208,7 @@ const BlogCreateEdit = () => {
                                       Category
                                     </label>
                                     <Select
+                                      key={dropdownKey}
                                       type="text"
                                       className="form-control-alternative"
                                       name="categoryId"
@@ -235,6 +248,7 @@ const BlogCreateEdit = () => {
                                   Image
                                 </label>
                                 <input
+                                  key={dropdownKey}
                                   className="form-control form-control-alternative"
                                   id="input-image"
                                   name="file"
