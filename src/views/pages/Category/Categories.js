@@ -40,13 +40,17 @@ const Categories = () => {
         <Row>
           <div className="col">
             <Card className="shadow">
-              <CardHeader className="border-0">
-                <h3 className="mb-0">All Blogs</h3>
+              <CardHeader className="border-0 d-flex align-items-center justify-content-between">
+                <h3 className="mb-0">All Categories</h3>
+                <Link to="/admin/category/create">
+                  <Button color="primary">Create</Button>
+                </Link>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Slug</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Actions </th>
                   </tr>
@@ -56,14 +60,12 @@ const Categories = () => {
                     data.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.name}</td>
+                        <td>{item.category_slug}</td>
                         <td>{item.created_at}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>
                             <Button>Edit</Button>
-                          </Link>{" "}
-                          <Link to={`${item.id}/details`}>
-                            <Button>Details</Button>
                           </Link>{" "}
                         </th>
                       </tr>

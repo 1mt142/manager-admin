@@ -44,11 +44,10 @@ export const loginRequest = async (endpoint, { email, password }) => {
     if (response.status === 201) {
       const { accessToken } = response.data;
       localStorage.setItem("token", accessToken);
-      console.log("Login ->", response.data);
-
+      localStorage.setItem("isAuthenticated", true);
       return true;
     }
-
+    localStorage.setItem("isAuthenticated", false);
     return false;
   } catch (error) {
     console.error("Login error:", error);

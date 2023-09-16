@@ -15,23 +15,18 @@ import Header from "components/Headers/Header.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
-import { GET_BLOGS_API } from "core/apiEndpoints";
+import { GET_TAG_API } from "core/apiEndpoints";
 
-const Blogs = () => {
-  const [data, setData] = useState({});
-  async function getPosts(params = {}) {
-    await getPublicData(GET_BLOGS_API, params)
-      .then((response) => {
-        setData(response.data);
-      })
+const Tags = () => {
+  const [data, setData] = useState([]);
+  async function getCategory() {
+    await getPublicData(GET_TAG_API)
+      .then((response) => setData(response?.data))
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    getPosts({
-      page: 1,
-      limit: 10,
-    });
+    getCategory();
   }, []);
 
   return (
@@ -44,8 +39,8 @@ const Blogs = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
-                <h3 className="mb-0">All Blogs</h3>
-                <Link to="/admin/blogs/create">
+                <h3 className="mb-0">All Tags</h3>
+                <Link to="/admin/tag/create">
                   <Button color="primary">Create</Button>
                 </Link>
               </CardHeader>
@@ -53,25 +48,20 @@ const Blogs = () => {
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Title</th>
-                    <th scope="col">Created by</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Actions </th>
                   </tr>
                 </thead>
                 <tbody>
                   {data &&
-                    data?.data?.map((item, idx) => (
+                    data.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.title}</td>
-                        <td>{item?.user?.username}</td>
                         <td>{item.created_at}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>
                             <Button>Edit</Button>
-                          </Link>{" "}
-                          <Link to={`${item.id}/details`}>
-                            <Button>Details</Button>
                           </Link>{" "}
                         </th>
                       </tr>
@@ -138,4 +128,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default Tags;

@@ -1,14 +1,19 @@
+// import Profile from "views/examples/Profile.js";
+// import Maps from "views/examples/Maps.js";
+// import Tables from "views/examples/Tables.js";
+// import Icons from "views/examples/Icons.js";
 import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
 import Blogs from "views/pages/Blog/Blogs";
 import BlogDetails from "views/pages/Blog/BlogDetails";
 import BlogCreateEdit from "views/pages/Blog/BlogCreateEdit";
 import Categories from "views/pages/Category/Categories";
+import CategoryCreateEdit from "views/pages/Category/CategoryCreateEdit";
+import TagCreateEdit from "views/pages/Tag/TagCreateEdit";
+import Tags from "views/pages/Tag/Tags";
+import Users from "views/pages/User/Users";
+import UserCreateEdit from "views/pages/User/UserCreateEdit";
 
 var routes = [
   {
@@ -60,19 +65,53 @@ var routes = [
     component: <Register />,
     layout: "/auth",
   },
+  // Category
   {
-    path: "/blogs",
-    name: "Blogs",
-    icon: "ni ni-circle-08 text-pink",
-    component: <Blogs />,
+    path: "/category",
+    name: "Categories",
+    icon: "ni ni-books text-pink",
+    component: <Categories />,
+    layout: "/admin",
+  },
+  {
+    path: "/category/create",
+    icon: "ni ni-books text-pink",
+    component: <CategoryCreateEdit />,
+    layout: "/admin",
+  },
+  {
+    path: "/category/:id/edit",
+    icon: "ni ni-books text-pink",
+    component: <CategoryCreateEdit />,
     layout: "/admin",
   },
 
+  // Tag
   {
-    path: "/categories",
-    name: "Categories",
-    icon: "ni ni-circle-08 text-pink",
-    component: <Categories />,
+    path: "/tag",
+    name: "Tags",
+    icon: "ni ni-tag text-pink",
+    component: <Tags />,
+    layout: "/admin",
+  },
+  {
+    path: "/tag/create",
+    icon: "ni ni-tag text-pink",
+    component: <TagCreateEdit />,
+    layout: "/admin",
+  },
+  {
+    path: "/tag/:id/edit",
+    icon: "ni ni-tag-08 text-pink",
+    component: <TagCreateEdit />,
+    layout: "/admin",
+  },
+  // Blog
+  {
+    path: "/blogs",
+    name: "Blogs",
+    icon: "ni ni-world-2 text-pink",
+    component: <Blogs />,
     layout: "/admin",
   },
   {
@@ -83,15 +122,34 @@ var routes = [
 
   {
     path: "/blogs/:id/edit",
-    icon: "ni ni-circle-08 text-pink",
+    icon: "ni ni-world-2 text-pink",
     component: <BlogCreateEdit />,
     layout: "/admin",
   },
   {
     path: "/blogs/create",
-    name: "Blog Create",
-    icon: "ni ni-circle-08 text-pink",
+    icon: "ni ni-world-2 text-pink",
     component: <BlogCreateEdit />,
+    layout: "/admin",
+  },
+  // User
+  {
+    path: "/user",
+    name: "Users",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Users />,
+    layout: "/admin",
+  },
+  {
+    path: "/user/create",
+    icon: "ni ni-circle-08 text-pink",
+    component: <UserCreateEdit />,
+    layout: "/admin",
+  },
+  {
+    path: "/user/:id/edit",
+    icon: "ni ni-circle-08 text-pink",
+    component: <UserCreateEdit />,
     layout: "/admin",
   },
 ];

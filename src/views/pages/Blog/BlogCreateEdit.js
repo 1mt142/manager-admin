@@ -96,7 +96,6 @@ const BlogCreateEdit = () => {
     formData.append("tags", JSON.stringify(values.tags));
     formData.append("categoryId", values.categoryId);
     formData.append("image", values.file);
-    console.log("FromData", formData);
     postBlog(formData);
     resetForm(); // this method is for without formik field
     setDropdownKey(dropdownKey + 1);

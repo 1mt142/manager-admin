@@ -17,8 +17,6 @@ const Stats = () => {
     getBlogStats();
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <div className="stats-header">

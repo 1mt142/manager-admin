@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "assets/plugins/nucleo/css/nucleo.css";
@@ -14,10 +14,6 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// toast.configure({
-//   position: "top-right",
-// });
 
 root.render(
   <>
@@ -32,7 +28,7 @@ root.render(
       <Routes>
         <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/auth/*" element={<AuthLayout />} />
-        <Route path="*" element={<Navigate to="/admin/index" replace />} />
+        <Route path="*" element={<Navigate to="/auth/login" replace />} />
       </Routes>
     </BrowserRouter>
   </>
