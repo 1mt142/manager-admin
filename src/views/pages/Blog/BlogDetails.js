@@ -1,4 +1,4 @@
-import { Card, CardHeader, Container, Row, CardBody } from "reactstrap";
+import { Card, CardHeader, Container, Row, CardBody, Button } from "reactstrap";
 import Header from "components/Headers/Header.js";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -34,7 +34,26 @@ const BlogDetails = () => {
                 <h1>
                   <b>{data.title}</b>
                 </h1>
-                <img src={`${BASE_API}/${data.imagePath}`} alt="Blog" />
+                <div>
+                  <span
+                    style={{ width: "fitContent" }}
+                    className="bg-primary text-white p-2 m-1 rounded"
+                  >
+                    {data ? data?.category?.name : ""}
+                  </span>
+                  {data?.tags?.map((item) => (
+                    <span
+                      style={{ width: "fitContent" }}
+                      className="bg-green text-white p-2 m-1 rounded"
+                    >
+                      #{item.title}
+                    </span>
+                  ))}
+                </div>
+                <div className="pt-2">
+                  <img src={`${BASE_API}/${data.imagePath}`} alt="Blog" />
+                </div>
+
                 <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
               </CardBody>
             </Card>

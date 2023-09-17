@@ -248,70 +248,81 @@ const BlogCreateEdit = () => {
                             <h6 className="heading-small text-muted mb-4">
                               Blog Image
                             </h6>
-
-                            <Col md="12">
-                              <FormGroup>
-                                <label
-                                  className="form-control-label"
-                                  htmlFor="input-address"
-                                >
-                                  Image
-                                </label>
-                                <input
-                                  key={dropdownKey}
-                                  className="form-control form-control-alternative"
-                                  id="input-image"
-                                  name="file"
-                                  type="file"
-                                  onChange={(event) => {
-                                    formikProps.setFieldValue(
-                                      "file",
-                                      event.currentTarget.files[0]
-                                    );
-                                  }}
-                                  accept="image/*"
-                                />
-                                <ErrorMessage
-                                  name="image"
-                                  component="div"
-                                  className="text-danger"
-                                />
-                              </FormGroup>
-                            </Col>
+                            <div className="pl-lg-4">
+                              <Row>
+                                <Col md="12">
+                                  <FormGroup>
+                                    <label
+                                      className="form-control-label"
+                                      htmlFor="input-address"
+                                    >
+                                      Image
+                                    </label>
+                                    <input
+                                      key={dropdownKey}
+                                      className="form-control form-control-alternative"
+                                      id="input-image"
+                                      name="file"
+                                      type="file"
+                                      onChange={(event) => {
+                                        formikProps.setFieldValue(
+                                          "file",
+                                          event.currentTarget.files[0]
+                                        );
+                                      }}
+                                      accept="image/*"
+                                    />
+                                    <ErrorMessage
+                                      name="image"
+                                      component="div"
+                                      className="text-danger"
+                                    />
+                                  </FormGroup>
+                                </Col>
+                              </Row>
+                            </div>
 
                             <hr className="my-4" />
                             <h6 className="heading-small text-muted mb-4">
                               Blog Details
                             </h6>
                             <div className="pl-lg-4">
-                              <FormGroup>
-                                <label>Blog Content</label>
-                                <Field name="content">
-                                  {({ field }) => (
-                                    <TextEditor
-                                      dataOnChange={(content) => {
-                                        formikProps.setFieldValue(
-                                          "content",
-                                          content
-                                        );
-                                      }}
+                              <Row>
+                                <Col md="12">
+                                  <FormGroup>
+                                    <label>Blog Content</label>
+                                    <Field name="content">
+                                      {({ field }) => (
+                                        <TextEditor
+                                          dataOnChange={(content) => {
+                                            formikProps.setFieldValue(
+                                              "content",
+                                              content
+                                            );
+                                          }}
+                                        />
+                                      )}
+                                    </Field>
+                                    <ErrorMessage
+                                      name="content"
+                                      component="div"
+                                      className="text-danger"
                                     />
-                                  )}
-                                </Field>
-                                <ErrorMessage
-                                  name="content"
-                                  component="div"
-                                  className="text-danger"
-                                />
-                              </FormGroup>
-                              <div className="pt-6">
-                                <Button
-                                  type="submit"
-                                  className="btn btn-primary"
-                                >
-                                  Submit
-                                </Button>
-                              </div>
+                                  </FormGroup>
+                                </Col>
+                              </Row>
+                            </div>
+                            <div className="pl-lg-4 pt-6">
+                              <Row>
+                                <Col md="12">
+                                  <Button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                  >
+                                    Submit
+                                  </Button>
+                                </Col>
+                              </Row>
                             </div>
                           </Form>
                         )}
