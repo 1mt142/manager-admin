@@ -129,7 +129,7 @@ const BlogCreateEdit = () => {
                 <h3 className="mb-0">BLOG {id ? "EDIT" : "CREATE"}</h3>
               </CardHeader>
               <CardBody className="child_div_center">
-                <Col className="order-xl-1" xl="8">
+                <Col className="order-xl-1" xl="10">
                   <Card className="bg-secondary shadow">
                     <CardBody>
                       <Formik
@@ -186,9 +186,10 @@ const BlogCreateEdit = () => {
                                       name="tags"
                                       options={tagOption}
                                       onChange={(selectedOptions) => {
-                                        const selectedValues = selectedOptions.map(
-                                          (option) => option?.value
-                                        );
+                                        const selectedValues =
+                                          selectedOptions.map(
+                                            (option) => option?.value
+                                          );
                                         formikProps.setFieldValue(
                                           "tags",
                                           selectedValues
@@ -289,12 +290,10 @@ const BlogCreateEdit = () => {
                                   {({ field }) => (
                                     <TextEditor
                                       dataOnChange={(content) => {
-                                        field.onChange({
-                                          target: {
-                                            name: "content",
-                                            value: content,
-                                          },
-                                        });
+                                        formikProps.setFieldValue(
+                                          "content",
+                                          content
+                                        );
                                       }}
                                     />
                                   )}
