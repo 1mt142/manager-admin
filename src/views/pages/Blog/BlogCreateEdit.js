@@ -25,14 +25,15 @@ import {
 } from "core/apiEndpoints";
 import { getPublicData, postPrivateData, putPrivateData } from "core/apiClient";
 import { useParams } from "react-router-dom";
+import TextEditor from "components/TextEditor";
 
 const BlogCreateEdit = () => {
   const [data, setData] = useState({});
   const [categoryData, setCategoryData] = useState([]);
   const [tagData, setTagData] = useState([]);
+  const [editorValue, setEditorValue] = useState("");
   const [dropdownKey, setDropdownKey] = useState(0);
   const { id } = useParams();
-
   const formRef = useRef(null);
 
   async function postBlog(body) {
@@ -85,7 +86,6 @@ const BlogCreateEdit = () => {
     title: Yup.string().required("Title is required"),
     tags: Yup.array().of(Yup.string()).required("Tags is required"),
     categoryId: Yup.string().required("Category is required"),
-    content: Yup.string().required("Content is required"),
     file: Yup.mixed().required("Image is required"),
   });
 
@@ -186,10 +186,9 @@ const BlogCreateEdit = () => {
                                       name="tags"
                                       options={tagOption}
                                       onChange={(selectedOptions) => {
-                                        const selectedValues =
-                                          selectedOptions.map(
-                                            (option) => option?.value
-                                          );
+                                        const selectedValues = selectedOptions.map(
+                                          (option) => option?.value
+                                        );
                                         formikProps.setFieldValue(
                                           "tags",
                                           selectedValues
@@ -286,22 +285,34 @@ const BlogCreateEdit = () => {
                             <div className="pl-lg-4">
                               <FormGroup>
                                 <label>Blog Content</label>
-                                <Field
-                                  className="form-control form-control-alternative"
-                                  placeholder="A few words about you ..."
-                                  rows="4"
-                                  type="textarea"
-                                  name="content"
-                                />
+                                <Field name="content">
+                                  {({ field }) => (
+                                    <TextEditor
+                                      dataOnChange={(content) => {
+                                        field.onChange({
+                                          target: {
+                                            name: "content",
+                                            value: content,
+                                          },
+                                        });
+                                      }}
+                                    />
+                                  )}
+                                </Field>
                                 <ErrorMessage
                                   name="content"
                                   component="div"
                                   className="text-danger"
                                 />
                               </FormGroup>
-                              <Button type="submit" className="btn btn-primary">
-                                Submit
-                              </Button>
+                              <div className="pt-6">
+                                <Button
+                                  type="submit"
+                                  className="btn btn-primary"
+                                >
+                                  Submit
+                                </Button>
+                              </div>
                             </div>
                           </Form>
                         )}

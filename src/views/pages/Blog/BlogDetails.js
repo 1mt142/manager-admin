@@ -31,9 +31,11 @@ const BlogDetails = () => {
                 <h3 className="mb-0">Blog Details</h3>
               </CardHeader>
               <CardBody>
-                <h1>{data.title}</h1>
-                <p>{data.content}</p>
+                <h1>
+                  <b>{data.title}</b>
+                </h1>
                 <img src={`${BASE_API}/${data.imagePath}`} alt="Blog" />
+                <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
               </CardBody>
             </Card>
           </div>
