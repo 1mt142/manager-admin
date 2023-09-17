@@ -129,7 +129,7 @@ const BlogCreateEdit = () => {
                 <h3 className="mb-0">BLOG {id ? "EDIT" : "CREATE"}</h3>
               </CardHeader>
               <CardBody className="child_div_center">
-                <Col className="order-xl-1" xl="10">
+                <Col className="order-xl-1" xl="12">
                   <Card className="bg-secondary shadow">
                     <CardBody>
                       <Formik
