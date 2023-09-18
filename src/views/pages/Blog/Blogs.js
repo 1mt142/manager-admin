@@ -26,11 +26,15 @@ const Blogs = () => {
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
   //
   const [data, setData] = useState({});
   const [dropdownKey, setDropdownKey] = useState(0);
   const [categoryData, setCategoryData] = useState([]);
   const [tagData, setTagData] = useState([]);
+
+  // SET FORM Data
+  const [formData, setFormData] = useState({});
   // const { id } = useParams();
   const formRef = useRef(null);
   async function getPosts(params = {}) {
@@ -83,7 +87,7 @@ const Blogs = () => {
     const updatedValues = {
       ...values,
       page: 1,
-      limit: 10,
+      limit: pageLimit,
     };
     Object.keys(updatedValues).forEach((key) => {
       if (
@@ -94,6 +98,7 @@ const Blogs = () => {
         delete updatedValues[key];
       }
     });
+    setFormData(updatedValues);
     getPosts(updatedValues);
     resetForm();
     setDropdownKey(dropdownKey + 1);
@@ -105,16 +110,18 @@ const Blogs = () => {
     getTag();
     getPosts({
       page: 1,
-      limit: 10,
+      limit: pageLimit,
     });
   }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    getPosts({
+    const updatedValues = {
+      ...formData,
       page: page,
-      limit: 5,
-    });
+      limit: pageLimit,
+    };
+    getPosts(updatedValues);
   };
   return (
     <>
@@ -169,7 +176,7 @@ const Blogs = () => {
                               Tag
                             </label>
                             <Select
-                              key={dropdownKey}
+                              // key={dropdownKey}
                               type="text"
                               className="form-control-alternative"
                               name="tagId"
@@ -202,7 +209,7 @@ const Blogs = () => {
                               Category
                             </label>
                             <Select
-                              key={dropdownKey}
+                              // key={dropdownKey}
                               type="text"
                               className="form-control-alternative"
                               name="categoryId"
