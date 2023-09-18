@@ -99,8 +99,8 @@ const BlogCreateEdit = () => {
 
   const initialValues = {
     title: data.title || "",
-    tags: [],
-    categoryId: "",
+    tags: data ? data?.tags?.map((item) => item.id) : [],
+    categoryId: data ? data?.category?.id : "",
     content: data.content || "",
   };
 
@@ -112,6 +112,7 @@ const BlogCreateEdit = () => {
   });
 
   const handleSubmitMethod = (values, { resetForm }) => {
+    console.log("From Value", values);
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("content", values.content);
@@ -210,10 +211,10 @@ const BlogCreateEdit = () => {
                                       options={tagOption}
                                       onChange={(selectedOptions) => {
                                         setSelectedTags(selectedOptions);
-                                        const selectedValues =
-                                          selectedOptions.map(
-                                            (option) => option?.value
-                                          );
+                                        const selectedValues = selectedOptions.map(
+                                          (option) => option?.value
+                                        );
+
                                         formikProps.setFieldValue(
                                           "tags",
                                           selectedValues
