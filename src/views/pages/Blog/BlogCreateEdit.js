@@ -26,12 +26,13 @@ import {
 import { getPublicData, postPrivateData, putPrivateData } from "core/apiClient";
 import { useParams } from "react-router-dom";
 import TextEditor from "components/TextEditor";
+import { BASE_API } from "core/apiEndpoints";
 
 const BlogCreateEdit = () => {
   const [data, setData] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
-
+  const [imageHide, setImageHide] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
   const [tagData, setTagData] = useState([]);
   const [dropdownKey, setDropdownKey] = useState(0);
@@ -102,6 +103,7 @@ const BlogCreateEdit = () => {
     tags: data ? data?.tags?.map((item) => item.id) : [],
     categoryId: data ? data?.category?.id : "",
     content: data.content || "",
+    file: data.imagePath || "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -296,9 +298,34 @@ const BlogCreateEdit = () => {
                                           "file",
                                           event.currentTarget.files[0]
                                         );
+                                        setImageHide(true);
                                       }}
                                       accept="image/*"
                                     />
+                                    {data?.imagePath && imageHide == false && (
+                                      <div className="pt-4">
+                                        <img
+                                          width="25%"
+                                          src={`${BASE_API}/${data.imagePath}`}
+                                          alt="Blog"
+                                        />
+                                      </div>
+                                    )}
+
+                                    {formikProps.values.file &&
+                                      typeof formikProps.values.file ===
+                                        "object" && (
+                                        <div className="pt-4">
+                                          <img
+                                            width="25%"
+                                            src={URL.createObjectURL(
+                                              formikProps.values.file
+                                            )}
+                                            alt="Blog"
+                                          />
+                                        </div>
+                                      )}
+
                                     <ErrorMessage
                                       name="image"
                                       component="div"
