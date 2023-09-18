@@ -86,6 +86,7 @@ const TextEditor = (props) => {
           theme="snow"
           modules={modules}
           formats={formats}
+          value={props.initialContent}
           placeholder="Write your content ...."
           onChange={(content, delta, source, editor) => {
             try {

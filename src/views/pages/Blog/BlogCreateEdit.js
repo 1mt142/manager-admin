@@ -348,6 +348,9 @@ const BlogCreateEdit = () => {
                                     <Field name="content">
                                       {({ field }) => (
                                         <TextEditor
+                                          initialContent={
+                                            formikProps?.values?.content
+                                          }
                                           dataOnChange={(content) => {
                                             formikProps.setFieldValue(
                                               "content",
