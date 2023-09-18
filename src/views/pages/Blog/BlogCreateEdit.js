@@ -29,9 +29,11 @@ import TextEditor from "components/TextEditor";
 
 const BlogCreateEdit = () => {
   const [data, setData] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
+
   const [categoryData, setCategoryData] = useState([]);
   const [tagData, setTagData] = useState([]);
-  const [editorValue, setEditorValue] = useState("");
   const [dropdownKey, setDropdownKey] = useState(0);
   const { id } = useParams();
   const formRef = useRef(null);
@@ -54,7 +56,26 @@ const BlogCreateEdit = () => {
 
   async function getPost(ID) {
     await getPublicData(GET_BLOG_API + ID)
-      .then((response) => setData(response.data))
+      .then((response) => {
+        setData(response.data);
+
+        if (id && response.data) {
+          setSelectedCategory({
+            label: response.data.category.name,
+            value: response.data.category.id,
+          });
+
+          setSelectedTags(
+            response.data &&
+              response.data.tags?.map((tag) => {
+                return {
+                  label: tag?.title,
+                  value: tag?.id,
+                };
+              })
+          );
+        }
+      })
       .catch((err) => console.log(err));
   }
 
@@ -82,6 +103,7 @@ const BlogCreateEdit = () => {
     categoryId: "",
     content: data.content || "",
   };
+
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     tags: Yup.array().of(Yup.string()).required("Tags is required"),
@@ -90,6 +112,7 @@ const BlogCreateEdit = () => {
   });
 
   const handleSubmitMethod = (values, { resetForm }) => {
+    console.log("VL", values);
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("content", values.content);
@@ -104,7 +127,7 @@ const BlogCreateEdit = () => {
 
   const categoryOption = categoryData.map((item) => {
     return {
-      label: item.name,
+      label: item?.name,
       value: item.id,
     };
   });
@@ -115,6 +138,9 @@ const BlogCreateEdit = () => {
       value: item.id,
     };
   });
+
+  console.log("CL", selectedCategory);
+  console.log("TL", selectedTags);
 
   return (
     <>
@@ -143,6 +169,7 @@ const BlogCreateEdit = () => {
                             onSubmit={formikProps.handleSubmit}
                             ref={formRef}
                           >
+                            {JSON.stringify(formikProps.values)}
                             <h6 className="heading-small text-muted mb-4">
                               Insert You Blog
                             </h6>
@@ -184,8 +211,10 @@ const BlogCreateEdit = () => {
                                       className="form-control-alternative"
                                       type="text"
                                       name="tags"
+                                      value={selectedTags}
                                       options={tagOption}
                                       onChange={(selectedOptions) => {
+                                        setSelectedTags(selectedOptions);
                                         const selectedValues =
                                           selectedOptions.map(
                                             (option) => option?.value
@@ -222,7 +251,9 @@ const BlogCreateEdit = () => {
                                       type="text"
                                       className="form-control-alternative"
                                       name="categoryId"
+                                      value={selectedCategory}
                                       onChange={(selectedOption) => {
+                                        setSelectedCategory(selectedOption);
                                         formikProps.setFieldValue(
                                           "categoryId",
                                           selectedOption?.value
