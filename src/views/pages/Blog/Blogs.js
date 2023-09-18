@@ -21,8 +21,11 @@ import { GET_BLOGS_API } from "core/apiEndpoints";
 import { GET_CATEGORY_API } from "core/apiEndpoints";
 import { GET_TAG_API } from "core/apiEndpoints";
 import PaginationComponent from "components/PaginationComponent";
+import LoaderComponent from "components/LoaderComponent";
 
 const Blogs = () => {
+  // Loading
+  const [loading, setLoading] = useState(false);
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -38,12 +41,17 @@ const Blogs = () => {
   // const { id } = useParams();
   const formRef = useRef(null);
   async function getPosts(params = {}) {
+    setLoading(true);
     await getPublicData(GET_BLOGS_API, params)
       .then((response) => {
         setData(response.data);
         setTotalPages(response.data.pagination.totalPages);
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }
 
   async function getCategory() {
@@ -258,6 +266,10 @@ const Blogs = () => {
                   <Button color="primary">Create</Button>
                 </Link>
               </CardHeader>
+
+              {loading && <LoaderComponent />}
+              <div></div>
+
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
