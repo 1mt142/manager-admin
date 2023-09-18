@@ -3,9 +3,6 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Table,
   Container,
   Row,
@@ -21,47 +18,104 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
 import { GET_BLOGS_API } from "core/apiEndpoints";
+import { GET_CATEGORY_API } from "core/apiEndpoints";
+import { GET_TAG_API } from "core/apiEndpoints";
+import PaginationComponent from "components/PaginationComponent";
 
 const Blogs = () => {
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  //
   const [data, setData] = useState({});
   const [dropdownKey, setDropdownKey] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [tagData, setTagData] = useState([]);
   // const { id } = useParams();
   const formRef = useRef(null);
   async function getPosts(params = {}) {
     await getPublicData(GET_BLOGS_API, params)
       .then((response) => {
         setData(response.data);
+        setTotalPages(response.data.pagination.totalPages);
       })
       .catch((err) => console.log(err));
   }
 
+  async function getCategory() {
+    await getPublicData(GET_CATEGORY_API)
+      .then((response) => setCategoryData(response?.data))
+      .catch((err) => console.log(err));
+  }
+
+  async function getTag() {
+    await getPublicData(GET_TAG_API)
+      .then((response) => setTagData(response?.data))
+      .catch((err) => console.log(err));
+  }
+
   const initialValues = {
-    // username: data.username || "",
-    // email: data.email || "",
-    // password: "",
-    // user_type: data.user_type || "",
+    title: "",
+    tagId: "",
+    categoryId: "",
   };
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("This field is required"),
-    email: Yup.string().required("This field is required"),
-    user_type: Yup.string().required("This field is required"),
-    password: Yup.string().required("This field is required"),
+    title: Yup.string(),
+    tagId: Yup.string(),
+    categoryId: Yup.string(),
+  });
+
+  const categoryOption = categoryData.map((item) => {
+    return {
+      label: item?.name,
+      value: item.id,
+    };
+  });
+
+  const tagOption = tagData.map((item) => {
+    return {
+      label: item.title,
+      value: item.id,
+    };
   });
 
   const handleSubmitMethod = (values, { resetForm }) => {
-    // postBlog(values);
+    const updatedValues = {
+      ...values,
+      page: 1,
+      limit: 10,
+    };
+    Object.keys(updatedValues).forEach((key) => {
+      if (
+        updatedValues[key] === null ||
+        updatedValues[key] === undefined ||
+        updatedValues[key] === ""
+      ) {
+        delete updatedValues[key];
+      }
+    });
+    getPosts(updatedValues);
     resetForm();
     setDropdownKey(dropdownKey + 1);
     formRef.current.reset();
   };
 
   useEffect(() => {
+    getCategory();
+    getTag();
     getPosts({
       page: 1,
       limit: 10,
     });
   }, []);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    getPosts({
+      page: page,
+      limit: 5,
+    });
+  };
   return (
     <>
       <Header />
@@ -118,17 +172,14 @@ const Blogs = () => {
                               key={dropdownKey}
                               type="text"
                               className="form-control-alternative"
-                              name="tag"
+                              name="tagId"
                               onChange={(selectedOption) => {
                                 formikProps.setFieldValue(
-                                  "tag",
+                                  "tagId",
                                   selectedOption?.value
                                 );
                               }}
-                              options={[
-                                { label: "GOST", value: "gost" },
-                                { label: "Admin", value: "Admin" },
-                              ]}
+                              options={tagOption}
                               onBlur={formikProps.handleBlur}
                               menuPortalTarget={document.body}
                               isSearchable
@@ -154,17 +205,14 @@ const Blogs = () => {
                               key={dropdownKey}
                               type="text"
                               className="form-control-alternative"
-                              name="category"
+                              name="categoryId"
                               onChange={(selectedOption) => {
                                 formikProps.setFieldValue(
-                                  "category",
+                                  "categoryId",
                                   selectedOption?.value
                                 );
                               }}
-                              options={[
-                                { label: "GOST", value: "gost" },
-                                { label: "Admin", value: "Admin" },
-                              ]}
+                              options={categoryOption}
                               onBlur={formikProps.handleBlur}
                               menuPortalTarget={document.body}
                               isSearchable
@@ -198,7 +246,7 @@ const Blogs = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
-                <h3 className="mb-0">ALL BLOGS</h3>
+                <h3 className="mb-0">BLOGS</h3>
                 <Link to="/admin/blogs/create">
                   <Button color="primary">Create</Button>
                 </Link>
@@ -234,54 +282,11 @@ const Blogs = () => {
               </Table>
               <CardFooter className="py-4">
                 <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem className="disabled">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        tabIndex="-1"
-                      >
-                        <i className="fas fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className="active">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        2 <span className="sr-only">(current)</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        3
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className="fas fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
+                  <PaginationComponent
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
                 </nav>
               </CardFooter>
             </Card>
