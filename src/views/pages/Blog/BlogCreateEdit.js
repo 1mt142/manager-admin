@@ -112,7 +112,6 @@ const BlogCreateEdit = () => {
   });
 
   const handleSubmitMethod = (values, { resetForm }) => {
-    console.log("VL", values);
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("content", values.content);
@@ -138,9 +137,6 @@ const BlogCreateEdit = () => {
       value: item.id,
     };
   });
-
-  console.log("CL", selectedCategory);
-  console.log("TL", selectedTags);
 
   return (
     <>
@@ -169,7 +165,6 @@ const BlogCreateEdit = () => {
                             onSubmit={formikProps.handleSubmit}
                             ref={formRef}
                           >
-                            {JSON.stringify(formikProps.values)}
                             <h6 className="heading-small text-muted mb-4">
                               Insert You Blog
                             </h6>
