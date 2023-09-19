@@ -95,7 +95,7 @@ const Sidebar = (props) => {
               className="navbar-brand-img"
               src={logo.imgSrc}
             /> */}
-            <h1>1MT142</h1>
+            <h2>MY MANAGER</h2>
           </NavbarBrand>
         ) : null}
         {/* User */}

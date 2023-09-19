@@ -110,9 +110,9 @@ const Blogs = () => {
     });
     setFormData(updatedValues);
     getPosts(updatedValues);
-    resetForm();
-    setDropdownKey(dropdownKey + 1);
-    formRef.current.reset();
+    // resetForm();
+    // setDropdownKey(dropdownKey + 1);
+    // formRef.current.reset();
   };
 
   useEffect(() => {
