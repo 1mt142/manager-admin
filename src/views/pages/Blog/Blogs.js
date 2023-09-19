@@ -22,6 +22,7 @@ import { GET_CATEGORY_API } from "core/apiEndpoints";
 import { GET_TAG_API } from "core/apiEndpoints";
 import PaginationComponent from "components/PaginationComponent";
 import LoaderComponent from "components/LoaderComponent";
+import { toast } from "react-toastify";
 
 const Blogs = () => {
   // Loading
@@ -44,6 +45,7 @@ const Blogs = () => {
     setLoading(true);
     await getPublicData(GET_BLOGS_API, params)
       .then((response) => {
+        toast.success(response?.data?.message);
         setData(response.data);
         setTotalPages(response.data.pagination.totalPages);
         setLoading(false);
@@ -56,13 +58,13 @@ const Blogs = () => {
 
   async function getCategory() {
     await getPublicData(GET_CATEGORY_API)
-      .then((response) => setCategoryData(response?.data))
+      .then((response) => setCategoryData(response?.data?.results))
       .catch((err) => console.log(err));
   }
 
   async function getTag() {
     await getPublicData(GET_TAG_API)
-      .then((response) => setTagData(response?.data))
+      .then((response) => setTagData(response?.data?.results))
       .catch((err) => console.log(err));
   }
 

@@ -16,15 +16,17 @@ import Select from "react-select";
 
 import Header from "components/Headers/Header.js";
 import { useEffect, useState, useRef } from "react";
-import { GET_BLOG_API, POST_BLOG_API, PUT_BLOG_API } from "core/apiEndpoints";
-import { getPublicData, postPrivateData, putPrivateData } from "core/apiClient";
-import { useParams } from "react-router-dom";
+import { POST_BLOG_API, PUT_BLOG_API } from "core/apiEndpoints";
+import { postPrivateData, putPrivateData } from "core/apiClient";
+import { useNavigate, useParams } from "react-router-dom";
+import { GET_USER_API } from "core/apiEndpoints";
+import { getPrivateData } from "core/apiClient";
 
 const UserCreateEdit = () => {
   const [data, setData] = useState({});
   const [dropdownKey, setDropdownKey] = useState(0);
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const formRef = useRef(null);
 
   async function postBlog(body) {
@@ -32,6 +34,7 @@ const UserCreateEdit = () => {
       await putPrivateData(`${PUT_BLOG_API + id}`, body)
         .then((response) => {
           toast.success(response.data.message);
+          navigate("/admin/user");
         })
         .catch((err) => console.log(err));
     } else {
@@ -43,21 +46,26 @@ const UserCreateEdit = () => {
     }
   }
 
-  async function getPost(ID) {
-    await getPublicData(GET_BLOG_API + ID)
-      .then((response) => setData(response.data))
+  async function getUser(ID) {
+    await getPrivateData(GET_USER_API + ID)
+      .then((response) => {
+        setData(response.data.results);
+        toast.success(response?.data?.message);
+      })
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    getPost(id);
+    if (id) {
+      getUser(id);
+    }
   }, [id]);
 
   const initialValues = {
     username: data.username || "",
     email: data.email || "",
     password: "",
-    user_type: data.user_type || "",
+    user_type: (data && data?.user_type) || "",
   };
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("This field is required"),

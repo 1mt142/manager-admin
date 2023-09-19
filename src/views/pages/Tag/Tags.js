@@ -16,12 +16,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
 import { GET_TAG_API } from "core/apiEndpoints";
+import { toast } from "react-toastify";
 
 const Tags = () => {
   const [data, setData] = useState([]);
   async function getCategory() {
     await getPublicData(GET_TAG_API)
-      .then((response) => setData(response?.data))
+      .then((response) => {
+        toast.success(response?.data?.message);
+        setData(response?.data?.results);
+      })
       .catch((err) => console.log(err));
   }
 

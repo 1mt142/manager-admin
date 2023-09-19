@@ -16,12 +16,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
 import { GET_CATEGORY_API } from "core/apiEndpoints";
+import { toast } from "react-toastify";
 
 const Categories = () => {
   const [data, setData] = useState([]);
   async function getCategory() {
     await getPublicData(GET_CATEGORY_API)
-      .then((response) => setData(response?.data))
+      .then((response) => {
+        toast.success(response?.data?.message);
+        setData(response?.data?.results);
+      })
       .catch((err) => console.log(err));
   }
 

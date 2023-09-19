@@ -9,6 +9,7 @@ import {
   FormGroup,
   Col,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -39,11 +40,14 @@ const BlogCreateEdit = () => {
   const { id } = useParams();
   const formRef = useRef(null);
 
+  const navigate = useNavigate();
+
   async function postBlog(body) {
     if (id) {
       await putPrivateData(`${PUT_BLOG_API + id}`, body)
         .then((response) => {
           toast.success(response.data.message);
+          navigate("/admin/blogs");
         })
         .catch((err) => console.log(err));
     } else {
@@ -58,17 +62,17 @@ const BlogCreateEdit = () => {
   async function getPost(ID) {
     await getPublicData(GET_BLOG_API + ID)
       .then((response) => {
-        setData(response.data);
+        setData(response.data?.results);
 
         if (id && response.data) {
           setSelectedCategory({
-            label: response.data.category.name,
-            value: response.data.category.id,
+            label: response?.data?.results?.category.name,
+            value: response?.data?.results?.category.id,
           });
 
           setSelectedTags(
             response.data &&
-              response.data.tags?.map((tag) => {
+              response?.data?.results?.tags?.map((tag) => {
                 return {
                   label: tag?.title,
                   value: tag?.id,
@@ -82,13 +86,13 @@ const BlogCreateEdit = () => {
 
   async function getCategory() {
     await getPublicData(GET_CATEGORY_API)
-      .then((response) => setCategoryData(response?.data))
+      .then((response) => setCategoryData(response?.data?.results))
       .catch((err) => console.log(err));
   }
 
   async function getTag() {
     await getPublicData(GET_TAG_API)
-      .then((response) => setTagData(response?.data))
+      .then((response) => setTagData(response?.data?.results))
       .catch((err) => console.log(err));
   }
 

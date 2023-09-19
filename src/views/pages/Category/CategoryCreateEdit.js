@@ -17,17 +17,21 @@ import Header from "components/Headers/Header.js";
 import { useEffect, useState } from "react";
 import { GET_CATEGORY_API } from "core/apiEndpoints";
 import { postPrivateData, putPrivateData } from "core/apiClient";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPrivateData } from "core/apiClient";
 
 const CategoryCreateEdit = () => {
-  const [data, setData] = useState({});
+  const [data, setCategoryData] = useState({});
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   async function createCategory(body) {
     if (id) {
       await putPrivateData(`${GET_CATEGORY_API + id}`, body)
         .then((response) => {
           toast.success(response.data.message);
+          navigate("/admin/category");
         })
         .catch((err) => console.log(err));
     } else {
@@ -39,26 +43,21 @@ const CategoryCreateEdit = () => {
     }
   }
 
-  // async function getPost(ID) {
-  //   await getPublicData(GET_BLOG_API + ID)
-  //     .then((response) => setData(response.data))
-  //     .catch((err) => console.log(err));
-  // }
-
-  // async function getCategory() {
-  //   await getPublicData(GET_CATEGORY_API)
-  //     .then((response) => setCategoryData(response?.data))
-  //     .catch((err) => console.log(err));
-  // }
+  async function getCategory(ID) {
+    await getPrivateData(GET_CATEGORY_API + ID)
+      .then((response) => setCategoryData(response?.data?.results))
+      .catch((err) => console.log(err));
+  }
 
   useEffect(() => {
-    // getPost(id);
-    // getCategory();
+    if (id) {
+      getCategory(id);
+    }
   }, [id]);
 
   const initialValues = {
     name: data.name || "",
-    category_slug: data.name || "",
+    category_slug: data.category_slug || "",
   };
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This is required"),

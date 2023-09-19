@@ -17,17 +17,22 @@ import Header from "components/Headers/Header.js";
 import { useEffect, useState } from "react";
 import { GET_TAG_API } from "core/apiEndpoints";
 import { postPrivateData, putPrivateData } from "core/apiClient";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPrivateData } from "core/apiClient";
+import { GET_USER_API } from "core/apiEndpoints";
 
 const TagCreateEdit = () => {
   const [data, setData] = useState({});
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   async function postTag(body) {
     if (id) {
       await putPrivateData(`${GET_TAG_API + id}`, body)
         .then((response) => {
           toast.success(response.data.message);
+          navigate("/admin/tag");
         })
         .catch((err) => console.log(err));
     } else {
@@ -39,13 +44,19 @@ const TagCreateEdit = () => {
     }
   }
 
-  // async function getPost(ID) {
-  //   await getPublicData(GET_BLOG_API + ID)
-  //     .then((response) => setData(response.data))
-  //     .catch((err) => console.log(err));
-  // }
+  async function getTag(ID) {
+    await getPrivateData(GET_TAG_API + ID)
+      .then((response) => {
+        toast.success(response.data.message);
+        setData(response.data.results);
+      })
+      .catch((err) => console.log(err));
+  }
 
   useEffect(() => {
+    if (id) {
+      getTag(id);
+    }
     // getPost(id);
   }, [id]);
 

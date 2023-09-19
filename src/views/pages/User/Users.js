@@ -16,12 +16,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GET_USER_API } from "core/apiEndpoints";
 import { getPrivateData } from "core/apiClient";
+import { toast } from "react-toastify";
 
 const Users = () => {
   const [data, setData] = useState([]);
   async function getCategory() {
     await getPrivateData(GET_USER_API)
-      .then((response) => setData(response?.data))
+      .then((response) => {
+        toast.success(response?.data?.message);
+        setData(response?.data?.results);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -40,7 +44,7 @@ const Users = () => {
             <Card className="shadow">
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
                 <h3 className="mb-0">All Users</h3>
-                <Link to="/admin/category/create">
+                <Link to="/admin/user/create">
                   <Button color="primary">Create</Button>
                 </Link>
               </CardHeader>

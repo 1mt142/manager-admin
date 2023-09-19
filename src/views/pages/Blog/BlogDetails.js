@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { GET_BLOG_API } from "core/apiEndpoints";
 import { getPublicData } from "core/apiClient";
 import { BASE_API } from "core/apiEndpoints";
+import { toast } from "react-toastify";
 
 const BlogDetails = () => {
   const [data, setData] = useState({});
@@ -12,7 +13,10 @@ const BlogDetails = () => {
 
   async function getPost(ID) {
     await getPublicData(GET_BLOG_API + ID)
-      .then((response) => setData(response.data))
+      .then((response) => {
+        toast.success(response.data.message);
+        setData(response.data.results);
+      })
       .catch((err) => console.log(err));
   }
 
