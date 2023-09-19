@@ -103,11 +103,11 @@ const BlogCreateEdit = () => {
   }, [id]);
 
   const initialValues = {
-    title: data.title || "",
+    title: data?.title || "",
     tags: data ? data?.tags?.map((item) => item.id) : [],
     categoryId: data ? data?.category?.id : "",
-    content: data.content || "",
-    file: data.imagePath || "",
+    content: data?.content || "",
+    file: data?.imagePath || "",
   };
 
   const validationSchema = Yup.object().shape({
