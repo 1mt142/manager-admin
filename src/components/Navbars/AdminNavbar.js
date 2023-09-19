@@ -16,8 +16,11 @@ import {
   Container,
   Media,
 } from "reactstrap";
+import userAvatar from "../../assets/img/theme/user-avatar.png";
 
 const AdminNavbar = (props) => {
+  const UserName = localStorage.getItem("user");
+
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -45,14 +48,11 @@ const AdminNavbar = (props) => {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("../../assets/img/theme/team-4-800x800.jpg")}
-                    />
+                    <img alt="..." src={userAvatar} />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                      {UserName.toUpperCase()}
                     </span>
                   </Media>
                 </Media>

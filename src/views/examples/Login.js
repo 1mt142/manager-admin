@@ -12,7 +12,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -50,13 +50,14 @@ const Login = () => {
 
   useEffect(() => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }, []);
 
   return (
     <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
+          {/* <CardHeader className="bg-transparent pb-5">
             <div className="text-muted text-center mt-2 mb-3">
               <small>Sign in with</small>
             </div>
@@ -96,7 +97,7 @@ const Login = () => {
                 <span className="btn-inner--text">Google</span>
               </Button>
             </div>
-          </CardHeader>
+          </CardHeader> */}
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
@@ -166,22 +167,22 @@ const Login = () => {
         </Card>
         <Row className="mt-3">
           <Col xs="6">
-            <a
+            {/* <a
               className="text-light"
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
               <small>Forgot password?</small>
-            </a>
+            </a> */}
           </Col>
           <Col className="text-right" xs="6">
-            <a
+            {/* <a
               className="text-light"
-              href="#pablo"
+              href="register"
               onClick={(e) => e.preventDefault()}
             >
               <small>Create new account</small>
-            </a>
+            </a> */}
           </Col>
         </Row>
       </Col>
