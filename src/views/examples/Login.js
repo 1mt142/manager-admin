@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import { useNavigate, Link } from "react-router-dom";
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { loginRequest } from "core/apiClient";
 import { GET_LOGIN_API } from "core/apiEndpoints";
@@ -125,6 +125,11 @@ const Login = () => {
                         name="email"
                       />
                     </InputGroup>
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="text-danger fs-6"
+                    />
                   </FormGroup>
                   <FormGroup>
                     <InputGroup className="input-group-alternative">
@@ -141,6 +146,11 @@ const Login = () => {
                         name="password"
                       />
                     </InputGroup>
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="text-danger fs-6"
+                    />
                   </FormGroup>
                   <div className="custom-control custom-control-alternative custom-checkbox">
                     <input
