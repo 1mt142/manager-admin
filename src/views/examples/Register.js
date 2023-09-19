@@ -13,6 +13,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
@@ -132,9 +133,11 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button">
-                  Create account
-                </Button>
+                <Link to="/admin/blogs/create">
+                  <Button className="mt-4" color="primary" type="button">
+                    Create account
+                  </Button>
+                </Link>
               </div>
             </Form>
           </CardBody>

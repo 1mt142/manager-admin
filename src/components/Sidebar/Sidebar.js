@@ -147,10 +147,17 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+              <DropdownItem to="/auth/login" tag={Link}>
                 <i className="ni ni-user-run" />
                 <span>Logout</span>
               </DropdownItem>
+              {/* <DropdownItem
+                href="/auth/login"
+                onClick={(e) => e.preventDefault()}
+              >
+                <i className="ni ni-user-run" />
+                <span>Logout</span>
+              </DropdownItem> */}
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -205,16 +212,16 @@ const Sidebar = (props) => {
           {/* Divider */}
           <hr className="my-3" />
           {/* Heading */}
-          <h6 className="navbar-heading text-muted">Documentation</h6>
+          <h6 className="navbar-heading text-muted">Others</h6>
           {/* Navigation */}
           <Nav className="mb-md-3" navbar>
             <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
+              <NavLink href="https://1mt142.github.io/know-me/" target="_blank">
                 <i className="ni ni-spaceship" />
-                Getting started
+                About Me
               </NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
                 <i className="ni ni-palette" />
                 Foundation
@@ -225,7 +232,7 @@ const Sidebar = (props) => {
                 <i className="ni ni-ui-04" />
                 Components
               </NavLink>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>

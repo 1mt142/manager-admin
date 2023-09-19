@@ -1,4 +1,5 @@
 // reactstrap components
+import { useEffect } from "react";
 import {
   Button,
   Card,
@@ -46,6 +47,11 @@ const Login = () => {
   const handleSubmitMethod = ({ email, password }) => {
     postLogin(email, password);
   };
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
+
   return (
     <>
       <Col lg="5" md="7">

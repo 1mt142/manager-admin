@@ -12,6 +12,7 @@ import "../src/assets/css/custom.css";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+import ProtectedRoute from "components/ProtectedRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -26,7 +27,9 @@ root.render(
     />
     <BrowserRouter>
       <Routes>
-        <Route path="/admin/*" element={<AdminLayout />} />
+        <Route path="" element={<ProtectedRoute />}>
+          <Route path="/admin/*" element={<AdminLayout />} />
+        </Route>
         <Route path="/auth/*" element={<AuthLayout />} />
         <Route path="*" element={<Navigate to="/auth/login" replace />} />
       </Routes>

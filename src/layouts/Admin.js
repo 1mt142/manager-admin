@@ -1,5 +1,12 @@
 import React from "react";
-import { useLocation, Route, Routes, Navigate } from "react-router-dom";
+import {
+  useLocation,
+  Route,
+  Routes,
+  Navigate,
+  // useNavigate,
+} from "react-router-dom";
+
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
@@ -12,6 +19,8 @@ import routes from "routes.js";
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
+
+  // const navigate = useNavigate();
 
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;

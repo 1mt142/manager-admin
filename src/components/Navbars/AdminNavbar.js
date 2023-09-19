@@ -73,14 +73,16 @@ const AdminNavbar = (props) => {
                   <i className="ni ni-calendar-grid-58" />
                   <span>Activity</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                {/* <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-support-16" />
                   <span>Support</span>
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                  <Link to="/auth/login">
+                    <i className="ni ni-user-run" />
+                    <span className="pl-3">Logout</span>
+                  </Link>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
