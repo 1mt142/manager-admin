@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
 import { GET_CATEGORY_API } from "core/apiEndpoints";
 import { toast } from "react-toastify";
+import { formatDate } from "utils/time";
 
 const Categories = () => {
   const [data, setData] = useState([]);
@@ -65,7 +66,7 @@ const Categories = () => {
                       <tr key={idx}>
                         <td>{item.name}</td>
                         <td>{item.category_slug}</td>
-                        <td>{item.created_at}</td>
+                        <td>{formatDate(item.created_at)}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>

@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { getPublicData } from "core/apiClient";
 import { GET_TAG_API } from "core/apiEndpoints";
 import { toast } from "react-toastify";
+import { formatDate } from "utils/time";
 
 const Tags = () => {
   const [data, setData] = useState([]);
@@ -61,7 +62,7 @@ const Tags = () => {
                     data.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.title}</td>
-                        <td>{item.created_at}</td>
+                        <td>{formatDate(item.created_at)}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>

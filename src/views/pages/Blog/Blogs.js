@@ -23,6 +23,7 @@ import { GET_TAG_API } from "core/apiEndpoints";
 import PaginationComponent from "components/PaginationComponent";
 import LoaderComponent from "components/LoaderComponent";
 import { toast } from "react-toastify";
+import { formatDate } from "utils/time";
 
 const Blogs = () => {
   // Loading
@@ -287,7 +288,7 @@ const Blogs = () => {
                       <tr key={idx}>
                         <td>{item.title}</td>
                         <td>{item?.user?.username}</td>
-                        <td>{item.created_at}</td>
+                        <td>{formatDate(item.created_at)}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>

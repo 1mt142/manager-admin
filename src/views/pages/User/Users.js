@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { GET_USER_API } from "core/apiEndpoints";
 import { getPrivateData } from "core/apiClient";
 import { toast } from "react-toastify";
+import { formatDate } from "utils/time";
 
 const Users = () => {
   const [data, setData] = useState([]);
@@ -64,8 +65,8 @@ const Users = () => {
                       <tr key={idx}>
                         <td>{item.username}</td>
                         <td>{item.email}</td>
-                        <td>{item.created_at}</td>
-                        <td>{item.updated_at}</td>
+                        <td>{formatDate(item.created_at)}</td>
+                        <td>{formatDate(item.updated_at)}</td>
                         <th>
                           {" "}
                           <Link to={`${item.id}/edit`}>
