@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_API } from "./apiEndpoints";
+import { toast } from "react-toastify";
 
 const publicAPI = axios.create({
   baseURL: BASE_API,
@@ -42,7 +43,8 @@ export const loginRequest = async (endpoint, { email, password }) => {
     const response = await publicAPI.post(endpoint, { email, password });
 
     if (response.status === 201) {
-      const { accessToken } = response.data;
+      const { accessToken, message } = response.data;
+      toast.success(message);
       localStorage.setItem("token", accessToken);
       return true;
     }
@@ -50,7 +52,7 @@ export const loginRequest = async (endpoint, { email, password }) => {
     localStorage.removeItem("user");
     return false;
   } catch (error) {
-    console.error("Login error:", error);
+    toast.error(error.response.data.message);
     return false;
   }
 };
